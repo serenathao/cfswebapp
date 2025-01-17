@@ -1,0 +1,47 @@
+{
+    "name": "cfsfe",
+    "version": "0.1.0",
+    "private": true,
+	"workspaces": [
+   		 "be",
+   		 "fe"
+	 ],
+    "proxy": "http://localhost:3010",
+    "dependencies": {
+        "@emotion/react": "^11.14.0",
+        "@emotion/styled": "^11.14.0",
+        "@mui/material": "^6.4.0",
+        "@table-library/react-table-library": "^4.1.7",
+        "axios": "^1.7.9",
+        "cra-template": "1.2.0",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
+        "react-scripts": "5.0.1",
+        "cors": "^2.8.5",
+        "express": "^4.21.2",
+        "sqlite3": "^5.1.7",
+        "concurrently": "^8.2.0"
+    },
+    "scripts": {
+        "build": "npm run build --workspace fe && npm run build --workspace be",
+        "start": "concurrently -n \"BE,FE\" \"npm run start --workspace be\" \"npm run start --workspace fe\""
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
+}
