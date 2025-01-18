@@ -3,6 +3,8 @@ Since the data has 100K entries, the data table has been divided into pages for 
 I used the libraries axios to handle communication with the BE, Material UI for the pagination component,
 and react-table-library to render the data table. These libraries have been widely used and are easy to integrate.
 
+Given additional time and a bigger project scope, I would also re-organize my FE code to use .css files instead of inline styles. This would make the FE code more maintainable.
+
 There is a place in the FE code where the number of database entries has been hard-coded in the FusionDataPagination file. This would lead to maintainability issue if the DB changes.
 If I had more time, I would have implemented this part so that the data gets the actual COUNT from the DB.
 
