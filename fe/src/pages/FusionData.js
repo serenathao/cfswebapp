@@ -1,69 +1,53 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import FusionDataTable from '../components/FusionDataTable';
 import FusionDataPagination from '../components/FusionDataPagination';
 
-class FusionDataPage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            storedData: [],
-            currentPage: 0,
-            limit: 100,
-        }
-        this.fetchData = this.fetchData.bind(this);
-        this.selectPage = this.selectPage.bind(this);
-        this.selectRowsPerPage = this.selectRowsPerPage.bind(this);
-    }
+const FusionDataPage = () => {
+    const [limit, setLimit] = useState(100);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [storedData, setStoredData] = useState([]);
 
-    async componentDidMount() {
-        this.fetchData();
-    }
+    // Whenever the user updates limit or current page, fetch new data
+    useEffect(() => {
+        fetchData();
+    }, [limit, currentPage]);
 
-    componentDidUpdate(prevProps, prevState) {
-        // Whenever the user updates the rows per page or current page, re-fetch the data
-        if (prevState.limit !== this.state.limit || prevState.currentPage !== this.state.currentPage ) {
-            this.fetchData();
-        }
-    }
-
-    fetchData() {
+    const fetchData = () => {
         const params = {
-            pageStart: this.state.currentPage * this.state.limit, 
-            limit: this.state.limit,
+            pageStart: currentPage * limit, 
+            limit: limit,
         };
         
         axios.get('/api/fusion_data', { params }).then((response) => {
-            this.setState({ storedData: response.data.data });
+            setStoredData( response.data.data );
         }).catch((error) => {
             console.error('Error fetching data:', error);
         });
     }
 
-    selectPage(e, newPage) {
-        this.setState({ currentPage: newPage });
+    const selectPage = (e, newPage) => {
+        setCurrentPage( newPage );
     }
 
-    selectRowsPerPage(e) {
-        this.setState({ limit: e.target.value });
+    const selectRowsPerPage = (e) => {
+        setLimit( e.target.value );
     }
 
-    render() {
-        return (
-            <div>
-                <FusionDataPagination
-                    currentPage={this.state.currentPage}
-                    selectPage={this.selectPage}
-                    limit={this.state.limit}
-                    selectRowsPerPage={this.selectRowsPerPage}
-                />
+    return (
+        <div>
+            <FusionDataPagination
+                currentPage={currentPage}
+                selectPage={selectPage}
+                limit={limit}
+                selectRowsPerPage={selectRowsPerPage}
+            />
 
-                <FusionDataTable
-                    tableData={this.state.storedData}
-                />
-            </div>
-        );
-    }
+            <FusionDataTable
+                tableData={storedData}
+            />
+        </div>
+    );
 }
 
 export default FusionDataPage;
